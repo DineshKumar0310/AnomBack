@@ -1,0 +1,41 @@
+# Application Configuration
+spring:
+  application:
+    name: anonboard-api
+
+  data:
+    mongodb:
+      uri: mongodb+srv://dinesh:PLiOJo5eywiYQzgz@anonm.vfgfm3b.mongodb.net/anonm
+
+  
+  # File Upload
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+
+# Server Configuration
+server:
+  port: 8080
+
+# JWT Configuration
+jwt:
+  secret: ${JWT_SECRET:anonboard-super-secret-key-change-in-production-min-256-bits-required}
+  expiration: 86400000  # 24 hours in milliseconds
+
+# App Configuration
+app:
+  post:
+    edit-window-minutes: 10
+  comment:
+    edit-window-minutes: 5
+  free-user:
+    post-limit: 5
+  cors:
+    allowed-origins: http://localhost:3000,http://localhost:5173
+
+# Cloudinary Configuration
+cloudinary:
+  cloud-name: ${CLOUDINARY_CLOUD_NAME:}
+  api-key: ${CLOUDINARY_API_KEY:}
+  api-secret: ${CLOUDINARY_API_SECRET:}
