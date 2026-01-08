@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: anom-backend
+    env: java
+    branch: main
+    buildCommand: "./mvnw clean package"
+    startCommand: "java -jar target/AnomBack-0.0.1-SNAPSHOT.jar"
+    envVars:
+      - key: MONGODB_URI
+        value: "mongodb+srv://dinesh:PLiOJo5eywiYQzgz@anonm.vfgfm3b.mongodb.net/anonm"
