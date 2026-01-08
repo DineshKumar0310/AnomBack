@@ -5,7 +5,7 @@ spring:
 
   data:
     mongodb:
-      uri: mongodb+srv://dinesh:PLiOJo5eywiYQzgz@anonm.vfgfm3b.mongodb.net/anonm
+      uri: ${MONGODB_URI:mongodb+srv://dinesh:PLiOJo5eywiYQzgz@anonm.vfgfm3b.mongodb.net/anonm?retryWrites=true&w=majority}
 
   
   # File Upload
@@ -16,7 +16,7 @@ spring:
 
 # Server Configuration
 server:
-  port: 8080
+  port: ${PORT:8080}
 
 # JWT Configuration
 jwt:
