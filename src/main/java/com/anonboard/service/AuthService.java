@@ -92,13 +92,13 @@ public class AuthService {
                 .avatar(avatar)
                 .role(User.Role.USER)
                 .userType(User.UserType.FREE)
-                .isVerified(false) // User starts unverified
+                .isVerified(true) // Auto-verify (Simplified flow)
                 .build();
 
         userRepository.save(user);
 
-        // Send OTP immediately
-        sendOtp(user.getEmail());
+        // Send OTP immediately (DISABLED for simplified flow)
+        // sendOtp(user.getEmail());
 
         // Return token but user is not verified so login might fail if checked strictly
         // immediately?
