@@ -26,9 +26,9 @@ spring:
         debug: true
         smtp:
           auth: true
-          connectiontimeout: 30000
-          timeout: 30000
-          writetimeout: 30000
+          connectiontimeout: 70000
+          timeout: 70000
+          writetimeout: 70000
           ssl:
             enable: true
             trust: "*"
