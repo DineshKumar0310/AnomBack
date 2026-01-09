@@ -53,9 +53,29 @@ public class AuthService {
         this.emailService = emailService;
     }
 
+    @org.springframework.transaction.annotation.Transactional
     public AuthResponse signup(SignupRequest request) {
-        if (userRepository.existsByEmail(request.getEmail())) {
-            throw new BadRequestException("Email already registered");
+        java.util.Optional<User> existingUser = userRepository.findByEmail(request.getEmail());
+        if (existingUser.isPresent()) {
+            User user = existingUser.get();
+            if (user.isVerified()) {
+                throw new BadRequestException("Email already registered");
+            }
+            // User exists but unverified (e.g. previous signup failed at email step or user
+            // didn't verify)
+            // Resend OTP and allow them to proceed to verification
+            sendOtp(user.getEmail());
+
+            // We generate a token (which won't work for login yet) just to satisfy the
+            // frontend response structure
+            String token = tokenProvider.generateToken(user.getEmail());
+
+            return AuthResponse.builder()
+                    .token(token)
+                    .anonymousName(user.getAnonymousName())
+                    .avatar(user.getAvatar())
+                    .role(user.getRole().name())
+                    .build();
         }
 
         String anonymousName = nameGenerator.generateUniqueName();
