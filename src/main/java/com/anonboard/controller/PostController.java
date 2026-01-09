@@ -94,7 +94,14 @@ public class PostController {
         CreatePostRequest request = objectMapper.readValue(postJson, CreatePostRequest.class);
         User user = authService.getUserByEmail(userDetails.getUsername());
 
-        String imageUrl = imageService.uploadImage(image);
+        String imageUrl = request.getImageUrl();
+        if (image != null && !image.isEmpty()) {
+            String uploadedUrl = imageService.uploadImage(image);
+            if (uploadedUrl != null) {
+                imageUrl = uploadedUrl;
+            }
+        }
+
         PostResponse post = postService.createPost(request, imageUrl, user.getId(), user.getAnonymousName(),
                 user.getAvatar());
         return ResponseEntity.ok(ApiResponse.success(post, "Post created successfully"));
