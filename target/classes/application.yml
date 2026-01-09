@@ -17,8 +17,8 @@ spring:
 
   # Mail Configuration
   mail:
-    host: smtp.googlemail.com
-    port: 465
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
     username: ${MAIL_USERNAME:}
     password: ${MAIL_PASSWORD:}
     properties:
@@ -26,15 +26,14 @@ spring:
         debug: true
         smtp:
           auth: true
-          connectiontimeout: 70000
-          timeout: 70000
-          writetimeout: 70000
-          ssl:
+          starttls:
             enable: true
+            required: true
+          ssl:
             trust: "*"
-            protocols: TLSv1.2
-          # starttls:
-          #   enable: true
+          connectiontimeout: 10000
+          timeout: 10000
+          writetimeout: 10000
 
 # Server Configuration
 server:
