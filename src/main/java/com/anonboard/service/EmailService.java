@@ -18,7 +18,6 @@ public class EmailService {
         this.mailSender = mailSender;
     }
 
-    @Async
     public void sendOtpEmail(String to, String otp) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
