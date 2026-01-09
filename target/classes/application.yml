@@ -15,6 +15,19 @@ spring:
       max-file-size: 5MB
       max-request-size: 5MB
 
+  # Mail Configuration
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
 # Server Configuration
 server:
   port: ${PORT:8080}
@@ -30,6 +43,8 @@ app:
     edit-window-minutes: 10
   comment:
     edit-window-minutes: 5
+  otp:
+    expiration-minutes: 10
   free-user:
     post-limit: 5
   cors:

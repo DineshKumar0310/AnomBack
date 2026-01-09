@@ -40,6 +40,9 @@ public class User {
     private UserType userType = UserType.FREE;
 
     @Builder.Default
+    private boolean isVerified = false;
+
+    @Builder.Default
     private boolean isBanned = false;
 
     private String banReason;
