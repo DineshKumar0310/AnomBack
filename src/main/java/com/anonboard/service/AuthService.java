@@ -61,10 +61,12 @@ public class AuthService {
             if (user.isVerified()) {
                 throw new BadRequestException("Email already registered");
             }
-            // User exists but unverified (e.g. previous signup failed at email step or user
-            // didn't verify)
-            // Resend OTP and allow them to proceed to verification
-            sendOtp(user.getEmail());
+            // User exists but unverified
+            // Auto-verify them and allow login
+            user.setVerified(true);
+            userRepository.save(user); // Save the verified status
+
+            // sendOtp(user.getEmail()); // Disabled
 
             // We generate a token (which won't work for login yet) just to satisfy the
             // frontend response structure
@@ -131,11 +133,11 @@ public class AuthService {
                 .orElseThrow(() -> new BadRequestException("Invalid email or password"));
 
         // Check verification
-        if (!user.isVerified()) {
-            // If unverified, maybe resend OTP?
-            // For now, just throw exception telling them to verify.
-            throw new ForbiddenException("Email not verified. Please verify your email.");
-        }
+        // Check verification (DISABLED for simplified flow)
+        // if (!user.isVerified()) {
+        // throw new ForbiddenException("Email not verified. Please verify your
+        // email.");
+        // }
 
         // Check if user is banned
         if (user.isBanned()) {
