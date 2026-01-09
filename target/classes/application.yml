@@ -5,9 +5,10 @@ spring:
 
   data:
     mongodb:
-      uri: ${MONGODB_URI:mongodb+srv://dinesh:PLiOJo5eywiYQzgz@anonm.vfgfm3b.mongodb.net/anonm?retryWrites=true&w=majority}
+     # uri: ${MONGODB_URI:mongodb://localhost:27017/anonboard}
+      uri: mongodb+srv://dinesh:Dinesh123@anon.9gztwnu.mongodb.net/anon
 
-  
+
   # File Upload
   servlet:
     multipart:
