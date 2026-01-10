@@ -42,6 +42,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/posts", "/api/posts/**").permitAll() // Allow public read access to posts
                                                                                     // (methods secured via PreAuthorize
                                                                                     // if needed)
+                        .requestMatchers("/api/jobs", "/api/jobs/**").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated());
 
