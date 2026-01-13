@@ -93,7 +93,7 @@ public class JobController {
         if (parentId != null) {
             // Notify parent comment author
             jobCommentRepository.findById(parentId).ifPresent(parent -> {
-                com.anonboard.service.NotificationService.NotificationType type = com.anonboard.model.Notification.NotificationType.JOB_REPLY;
+                com.anonboard.model.Notification.NotificationType type = com.anonboard.model.Notification.NotificationType.JOB_REPLY;
                 String message = "replied to your question on a job";
                 String link = "/jobs/" + jobId;
                 notificationService.createNotification(parent.getAuthorId(), type, message, link, user);
