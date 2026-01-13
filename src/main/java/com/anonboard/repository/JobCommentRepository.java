@@ -8,5 +8,12 @@ import java.util.List;
 
 @Repository
 public interface JobCommentRepository extends MongoRepository<JobComment, String> {
-    List<JobComment> findByJobIdOrderByCreatedAtDesc(String jobId);
+    // Top-level comments (no parent)
+    List<JobComment> findByJobIdAndParentIdIsNullOrderByCreatedAtDesc(String jobId);
+
+    // Replies to a comment
+    List<JobComment> findByParentIdOrderByCreatedAtAsc(String parentId);
+
+    // Count replies for a parent
+    int countByParentId(String parentId);
 }

@@ -15,9 +15,9 @@ public class JobService {
 
     public List<Job> getActiveJobs(Job.JobType type) {
         if (type != null) {
-            return jobRepository.findByIsActiveTrueAndTypeOrderByPostedDateDesc(type);
+            return jobRepository.findByActiveTrueAndTypeOrderByPostedDateDesc(type);
         }
-        return jobRepository.findByIsActiveTrueOrderByPostedDateDesc();
+        return jobRepository.findByActiveTrueOrderByPostedDateDesc();
     }
 
     public List<Job> getAllJobsForAdmin() {
@@ -43,6 +43,10 @@ public class JobService {
         job.setDuration(jobDetails.getDuration());
         job.setLocation(jobDetails.getLocation());
         job.setEligibility(jobDetails.getEligibility());
+        job.setEligibleDegrees(jobDetails.getEligibleDegrees());
+        job.setEligibleBranches(jobDetails.getEligibleBranches());
+        job.setEligibleBatches(jobDetails.getEligibleBatches());
+        job.setExperienceLevel(jobDetails.getExperienceLevel());
         job.setLastDate(jobDetails.getLastDate());
         job.setDescription(jobDetails.getDescription());
         job.setApplyLink(jobDetails.getApplyLink());

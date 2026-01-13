@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface JobRepository extends MongoRepository<Job, String> {
-    List<Job> findByIsActiveTrueOrderByPostedDateDesc();
+    List<Job> findByActiveTrueOrderByPostedDateDesc();
 
-    List<Job> findByIsActiveTrueAndTypeOrderByPostedDateDesc(Job.JobType type);
+    List<Job> findByActiveTrueAndTypeOrderByPostedDateDesc(Job.JobType type);
 }

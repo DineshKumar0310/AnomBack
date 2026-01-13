@@ -37,18 +37,28 @@ public class Job {
 
     private String location; // "Remote", "Onsite", "Hybrid - City"
 
+    // Enhanced eligibility fields
+    @Builder.Default
+    private List<String> eligibleDegrees = new ArrayList<>(); // B.E., B.Tech, BCS, MCA, etc.
+
+    @Builder.Default
+    private List<String> eligibleBranches = new ArrayList<>(); // CSE, IT, ECE, etc.
+
+    private String eligibleBatches; // "2024-2026"
+
+    private String experienceLevel; // "Fresher", "0-2 years", "2-5 years"
+
+    // Legacy field kept for backward compatibility
     private String eligibility;
 
     private Instant lastDate;
 
-    // Use a string or structure for rich text description if needed, effectively
-    // simpler for now
     private String description;
 
     private String applyLink;
 
     @Builder.Default
-    private boolean isActive = true;
+    private boolean active = true; // Renamed from isActive to fix lombok getter issue
 
     @Builder.Default
     private List<String> tags = new ArrayList<>();
