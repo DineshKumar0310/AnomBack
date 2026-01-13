@@ -28,21 +28,25 @@ public class CommentService {
     private final PostRepository postRepository;
     private final VoteRepository voteRepository;
 
+    private final NotificationService notificationService;
+    private final UserRepository userRepository;
+
     @Value("${app.comment.edit-window-minutes:10}")
     private int editWindowMinutes;
 
     public CommentService(CommentRepository commentRepository, PostRepository postRepository,
-            VoteRepository voteRepository) {
+            VoteRepository voteRepository, NotificationService notificationService, UserRepository userRepository) {
         this.commentRepository = commentRepository;
         this.postRepository = postRepository;
         this.voteRepository = voteRepository;
+        this.notificationService = notificationService;
+        this.userRepository = userRepository;
     }
 
     public CommentResponse createComment(String postId, CreateCommentRequest request, String userId,
             String anonymousName, String avatar) {
-        if (!postRepository.existsById(postId)) {
-            throw new NotFoundException("Post not found");
-        }
+        com.anonboard.model.Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new NotFoundException("Post not found"));
 
         String parentId = request.getParentId();
 
@@ -71,9 +75,35 @@ public class CommentService {
 
         if (parentId == null) {
             postRepository.incrementCommentCount(postId, 1);
+
+            // Notify post author
+            User actor = userRepository.findById(userId).orElseThrow();
+            notificationService.createNotification(
+                    post.getAuthorId(),
+                    com.anonboard.model.Notification.NotificationType.POST_COMMENT,
+                    "commented on your post: " + truncate(post.getTitle(), 30),
+                    "/post/" + postId,
+                    actor);
+        } else {
+            // Notify parent comment author
+            commentRepository.findById(parentId).ifPresent(parent -> {
+                User actor = userRepository.findById(userId).orElseThrow();
+                notificationService.createNotification(
+                        parent.getAuthorId(),
+                        com.anonboard.model.Notification.NotificationType.COMMENT_REPLY,
+                        "replied to your comment",
+                        "/post/" + postId,
+                        actor);
+            });
         }
 
         return toCommentResponse(comment, userId);
+    }
+
+    private String truncate(String str, int length) {
+        if (str == null)
+            return "";
+        return str.length() > length ? str.substring(0, length) + "..." : str;
     }
 
     // Returns ONLY top-level comments - replies are NOT loaded by default

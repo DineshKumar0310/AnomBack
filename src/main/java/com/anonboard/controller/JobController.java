@@ -26,6 +26,7 @@ public class JobController {
     private final JobService jobService;
     private final JobCommentRepository jobCommentRepository;
     private final UserRepository userRepository;
+    private final com.anonboard.service.NotificationService notificationService;
 
     private static final int EDIT_WINDOW_MINUTES = 5;
 
@@ -88,6 +89,17 @@ public class JobController {
                 .build();
 
         JobComment saved = jobCommentRepository.save(comment);
+
+        if (parentId != null) {
+            // Notify parent comment author
+            jobCommentRepository.findById(parentId).ifPresent(parent -> {
+                com.anonboard.service.NotificationService.NotificationType type = com.anonboard.model.Notification.NotificationType.JOB_REPLY;
+                String message = "replied to your question on a job";
+                String link = "/jobs/" + jobId;
+                notificationService.createNotification(parent.getAuthorId(), type, message, link, user);
+            });
+        }
+
         return ResponseEntity.ok(enrichComment(saved, user));
     }
 
